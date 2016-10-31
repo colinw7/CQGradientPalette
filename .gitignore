@@ -1,0 +1,10 @@
+*.o
+
+moc_*.cpp
+
+src/Makefile
+test/Makefile
+
+bin/
+obj/
+lib/

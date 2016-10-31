@@ -1,0 +1,6 @@
+. shorter code
+. color model for functions
+. click to add in defined colors
+. drag points in defined colors
+. axis labels
+. curves
