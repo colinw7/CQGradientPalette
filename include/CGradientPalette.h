@@ -4,6 +4,7 @@
 #include <CExpr.h>
 #include <CColor.h>
 #include <CRGBA.h>
+#include <NaN.h>
 #include <string>
 #include <map>
 #include <memory>
@@ -55,7 +56,7 @@ class CCubeHelix {
     saturation_ = 1;
   }
 
-  CRGBA interp(double t) const {
+  CRGBA interp(double t, bool negate=false) const {
     double h = ah_ + bh_*t;
     double l = pow(al_ + bl_*t, std::max(cycles_, 0.01));
     double a = (as_ + bs_*t)*l*(1 - l);
@@ -63,9 +64,14 @@ class CCubeHelix {
     double cosh = cos(h);
     double sinh = sin(h);
 
-    return CRGBA(l + a*(-0.14861*cosh + 1.78277*sinh),
-                 l + a*(-0.29227*cosh - 0.90649*sinh),
-                 l + a*(+1.97294*cosh));
+    double r = l + a*(-0.14861*cosh + 1.78277*sinh);
+    double g = l + a*(-0.29227*cosh - 0.90649*sinh);
+    double b = l + a*(+1.97294*cosh);
+
+    if (! negate)
+      return CRGBA(r, g, b);
+    else
+      return CRGBA(1.0 - r, 1.0 - g, 1.0 - b);
   }
 
  private:
@@ -118,8 +124,17 @@ class CGradientPalette {
   bool isGray() const { return gray_; }
   void setGray(bool b) { gray_ = b; }
 
-  bool isNegative() const { return negative_; }
-  void setNegative(bool b) { negative_ = b; }
+  bool isCubeNegative() const { return cubeNegative_; }
+  void setCubeNegative(bool b) { cubeNegative_ = b; }
+
+  bool isRedNegative() const { return redNegative_; }
+  void setRedNegative(bool b) { redNegative_ = b; }
+
+  bool isGreenNegative() const { return greenNegative_; }
+  void setGreenNegative(bool b) { greenNegative_ = b; }
+
+  bool isBlueNegative() const { return blueNegative_; }
+  void setBlueNegative(bool b) { blueNegative_ = b; }
 
   int maxColors() const { return maxColors_; }
   void setMaxColors(int n) { maxColors_ = n; }
@@ -226,13 +241,16 @@ class CGradientPalette {
   ColorMap   colors_;
 
   // Misc
-  CExpr*     expr_;
-  ColorModel colorModel_ { ColorModel::RGB };
-  bool       negative_   { false };
-  bool       gray_       { false };
-  double     gamma_      { 1.5 };
-  int        maxColors_  { -1 };
-  bool       psAllcF_    { false };
+  CExpr*     expr_          { nullptr };
+  ColorModel colorModel_    { ColorModel::RGB };
+  bool       redNegative_   { false };
+  bool       greenNegative_ { false };
+  bool       blueNegative_  { false };
+  bool       cubeNegative_  { false };
+  bool       gray_          { false };
+  double     gamma_         { 1.5 };
+  int        maxColors_     { -1 };
+  bool       psAllcF_       { false };
 };
 
 typedef std::unique_ptr<CGradientPalette> CGradientPaletteP;

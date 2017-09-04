@@ -1,10 +1,12 @@
 #ifndef CUNIX_FILE_H
 #define CUNIX_FILE_H
 
+#include <vector>
+#include <string>
+#include <iostream>
+
 #include <cstring>
 #include <cstdio>
-#include <iostream>
-#include <string>
 
 typedef unsigned char uchar;
 

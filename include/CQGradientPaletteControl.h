@@ -10,11 +10,12 @@ class CQGradientPalette;
 class CQGradientPaletteColorType;
 class CQGradientPaletteModel;
 class CQGradientPaletteDefinedColors;
-class QGridLayout;
-class QStackedWidget;
-class QLineEdit;
-class QPushButton;
 class CQRealSpin;
+class QStackedWidget;
+class QPushButton;
+class QLineEdit;
+class QCheckBox;
+class QGridLayout;
 
 class CQGradientPaletteControl : public QFrame {
   Q_OBJECT
@@ -61,6 +62,12 @@ class CQGradientPaletteControl : public QFrame {
 
   void modelChanged(int);
 
+  void rNegativeChecked(int state);
+  void gNegativeChecked(int state);
+  void bNegativeChecked(int state);
+
+  void cubeNegativeChecked(int state);
+
   void colorsChanged();
   void addColorSlot();
   void loadColorsSlot();
@@ -79,21 +86,25 @@ class CQGradientPaletteControl : public QFrame {
   void createRealEdit(QGridLayout *grid, int row, const QString &label, CQRealSpin **edit);
 
  private:
-  CQGradientPalette*              palette_;
-  CQGradientPaletteColorType*     colorType_;
-  QStackedWidget*                 stack_;
-  CQGradientPaletteModel*         redModel_;
-  CQGradientPaletteModel*         greenModel_;
-  CQGradientPaletteModel*         blueModel_;
-  QLineEdit*                      redFunction_;
-  QLineEdit*                      greenFunction_;
-  QLineEdit*                      blueFunction_;
-  CQGradientPaletteDefinedColors* definedColors_;
-  QPushButton*                    addColorButton_;
-  QPushButton*                    loadColorsButton_;
-  CQRealSpin*                     cubeStart_;
-  CQRealSpin*                     cubeCycles_;
-  CQRealSpin*                     cubeSaturation_;
+  CQGradientPalette*              palette_             { nullptr };
+  CQGradientPaletteColorType*     colorType_           { nullptr };
+  QStackedWidget*                 stack_               { nullptr };
+  CQGradientPaletteModel*         redModel_            { nullptr };
+  CQGradientPaletteModel*         greenModel_          { nullptr };
+  CQGradientPaletteModel*         blueModel_           { nullptr };
+  QCheckBox*                      modelRNegativeCheck_ { nullptr };
+  QCheckBox*                      modelGNegativeCheck_ { nullptr };
+  QCheckBox*                      modelBNegativeCheck_ { nullptr };
+  QLineEdit*                      redFunction_         { nullptr };
+  QLineEdit*                      greenFunction_       { nullptr };
+  QLineEdit*                      blueFunction_        { nullptr };
+  CQGradientPaletteDefinedColors* definedColors_       { nullptr };
+  QPushButton*                    addColorButton_      { nullptr };
+  QPushButton*                    loadColorsButton_    { nullptr };
+  CQRealSpin*                     cubeStart_           { nullptr };
+  CQRealSpin*                     cubeCycles_          { nullptr };
+  CQRealSpin*                     cubeSaturation_      { nullptr };
+  QCheckBox*                      cubeNegativeCheck_   { nullptr };
 };
 
 //---
@@ -129,8 +140,8 @@ class CQGradientPaletteDefinedColors : public QTableWidget {
      r(r1), c(c1) {
     }
 
-    double r;
-    CRGBA  c;
+    double r { 0.0 };
+    CRGBA  c { 0, 0, 0 };
   };
 
   typedef std::vector<RealColor> RealColors;

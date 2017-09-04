@@ -163,11 +163,11 @@ getColor(double x) const
     return c1;
   }
   else if (colorType() == ColorType::MODEL) {
-    if (isNegative())
-      x = 1.0 - x;
-
     if (isGray()) {
       double g = Util::clamp(x, 0.0, 1.0);
+
+      if (isRedNegative() || isGreenNegative() || isBlueNegative())
+        g = 1.0 - g;
 
       return CColor(CRGBA(g, g, g));
     }
@@ -175,6 +175,10 @@ getColor(double x) const
       double r = Util::clamp(interp(redModel  (), x), 0.0, 1.0);
       double g = Util::clamp(interp(greenModel(), x), 0.0, 1.0);
       double b = Util::clamp(interp(blueModel (), x), 0.0, 1.0);
+
+      if (isRedNegative  ()) r = 1.0 - r;
+      if (isGreenNegative()) g = 1.0 - g;
+      if (isBlueNegative ()) b = 1.0 - b;
 
       return CColor(CRGBA(r, g, b));
     }
@@ -229,7 +233,7 @@ getColor(double x) const
     return c;
   }
   else if (colorType() == ColorType::CUBEHELIX) {
-    return CColor(cubeHelix_.interp(x));
+    return CColor(cubeHelix_.interp(x, isCubeNegative()));
   }
   else {
     return CColor(CRGBA(0, 0, 0));
@@ -436,12 +440,14 @@ unset()
   cubeHelix_.reset();
 
   // Misc
-  colorModel_ = ColorModel::RGB;
-  negative_   = false;
-  gray_       = false;
-  gamma_      = 1.5;
-  maxColors_  = -1;
-  psAllcF_    = false;
+  colorModel_    = ColorModel::RGB;
+  redNegative_   = false;
+  greenNegative_ = false;
+  blueNegative_  = false;
+  gray_          = false;
+  gamma_         = 1.5;
+  maxColors_     = -1;
+  psAllcF_       = false;
 }
 
 void
@@ -467,7 +473,11 @@ show(std::ostream &os) const
             " saturation " << cubeHelix_.saturation() << std::endl;
   }
 
-  os << "figure is " << (isNegative() ? "NEGATIVE" : "POSITIVE") << std::endl;
+  if      (colorType() == ColorType::MODEL)
+    os << "figure is " << ((isRedNegative() || isGreenNegative() || isBlueNegative()) ?
+                            "NEGATIVE" : "POSITIVE") << std::endl;
+  else if (colorType() == ColorType::CUBEHELIX)
+    os << "figure is " << (isCubeNegative() ? "NEGATIVE" : "POSITIVE") << std::endl;
 
   if (psAllcF_)
     os << "all color formulae ARE written into output postscript file" << std::endl;

@@ -12,12 +12,15 @@
 #include <QFileDialog>
 #include <QDir>
 #include <QHeaderView>
+#include <QCheckBox>
 #include <QItemDelegate>
 
 CQGradientPaletteControl::
 CQGradientPaletteControl(CQGradientPalette *palette) :
  QFrame(0), palette_(palette)
 {
+  setObjectName("paletteControl");
+
   setSizePolicy(QSizePolicy::Fixed, QSizePolicy::Expanding);
 
   QVBoxLayout *layout = new QVBoxLayout(this);
@@ -37,9 +40,13 @@ CQGradientPaletteControl(CQGradientPalette *palette) :
 
   stack_ = new QStackedWidget;
 
+  stack_->setObjectName("stack");
+
   //---
 
   QFrame *modelFrame = new QFrame;
+
+  modelFrame->setObjectName("modelFrame");
 
   QGridLayout *modelGridLayout = new QGridLayout(modelFrame);
   modelGridLayout->setMargin(2); modelGridLayout->setSpacing(2);
@@ -47,8 +54,6 @@ CQGradientPaletteControl(CQGradientPalette *palette) :
   createModelCombo(modelGridLayout, 0, "Red"  , &redModel_  );
   createModelCombo(modelGridLayout, 1, "Green", &greenModel_);
   createModelCombo(modelGridLayout, 2, "Blue" , &blueModel_ );
-
-  modelGridLayout->setRowStretch(3, 1);
 
   setRedModel  (pal->redModel  ());
   setGreenModel(pal->greenModel());
@@ -58,11 +63,31 @@ CQGradientPaletteControl(CQGradientPalette *palette) :
   connect(greenModel_, SIGNAL(currentIndexChanged(int)), this, SLOT(modelChanged(int)));
   connect(blueModel_ , SIGNAL(currentIndexChanged(int)), this, SLOT(modelChanged(int)));
 
+  modelRNegativeCheck_ = new QCheckBox("Red Negative");
+  modelGNegativeCheck_ = new QCheckBox("Green Negative");
+  modelBNegativeCheck_ = new QCheckBox("Blue Negative");
+
+  modelRNegativeCheck_->setObjectName("rnegative");
+  modelGNegativeCheck_->setObjectName("gnegative");
+  modelBNegativeCheck_->setObjectName("bnegative");
+
+  connect(modelRNegativeCheck_, SIGNAL(stateChanged(int)), this, SLOT(rNegativeChecked(int)));
+  connect(modelGNegativeCheck_, SIGNAL(stateChanged(int)), this, SLOT(gNegativeChecked(int)));
+  connect(modelBNegativeCheck_, SIGNAL(stateChanged(int)), this, SLOT(bNegativeChecked(int)));
+
+  modelGridLayout->addWidget(modelRNegativeCheck_, 3, 0, 1, 2);
+  modelGridLayout->addWidget(modelGNegativeCheck_, 4, 0, 1, 2);
+  modelGridLayout->addWidget(modelBNegativeCheck_, 5, 0, 1, 2);
+
+  modelGridLayout->setRowStretch(6, 1);
+
   stack_->addWidget(modelFrame);
 
   //---
 
   QFrame *definedFrame = new QFrame;
+
+  definedFrame->setObjectName("definedFrame");
 
   QVBoxLayout *definedFrameLayout = new QVBoxLayout(definedFrame);
   definedFrameLayout->setMargin(2); definedFrameLayout->setSpacing(2);
@@ -77,17 +102,22 @@ CQGradientPaletteControl(CQGradientPalette *palette) :
 
   QFrame *definedButtonsFrame = new QFrame;
 
+  definedButtonsFrame->setObjectName("definedButtonsFrame");
+
   QHBoxLayout *definedButtonsLayout = new QHBoxLayout(definedButtonsFrame);
   definedButtonsLayout->setMargin(2); definedButtonsLayout->setSpacing(2);
 
   addColorButton_   = new QPushButton("Add");
   loadColorsButton_ = new QPushButton("Load");
 
+  addColorButton_  ->setObjectName("add");
+  loadColorsButton_->setObjectName("load");
+
   definedButtonsLayout->addWidget(addColorButton_);
   definedButtonsLayout->addWidget(loadColorsButton_);
   definedButtonsLayout->addStretch(1);
 
-  connect(addColorButton_, SIGNAL(clicked()), this, SLOT(addColorSlot()));
+  connect(addColorButton_  , SIGNAL(clicked()), this, SLOT(addColorSlot()));
   connect(loadColorsButton_, SIGNAL(clicked()), this, SLOT(loadColorsSlot()));
 
   definedFrameLayout->addWidget(definedButtonsFrame);
@@ -97,6 +127,8 @@ CQGradientPaletteControl(CQGradientPalette *palette) :
   //---
 
   QFrame *functionsFrame = new QFrame;
+
+  functionsFrame->setObjectName("functionsFrame");
 
   QGridLayout *functionsGridLayout = new QGridLayout(functionsFrame);
   functionsGridLayout->setMargin(2); functionsGridLayout->setSpacing(2);
@@ -121,6 +153,8 @@ CQGradientPaletteControl(CQGradientPalette *palette) :
 
   QFrame *cubeFrame = new QFrame;
 
+  cubeFrame->setObjectName("cubeFrame");
+
   QGridLayout *cubeGridLayout = new QGridLayout(cubeFrame);
   cubeGridLayout->setMargin(2); cubeGridLayout->setSpacing(2);
 
@@ -128,7 +162,15 @@ CQGradientPaletteControl(CQGradientPalette *palette) :
   createRealEdit(cubeGridLayout, 1, "Cycles"    , &cubeCycles_    );
   createRealEdit(cubeGridLayout, 2, "Saturation", &cubeSaturation_);
 
-  cubeGridLayout->setRowStretch(3, 1);
+  cubeNegativeCheck_ = new QCheckBox("Negative");
+
+  cubeNegativeCheck_->setObjectName("negative");
+
+  connect(cubeNegativeCheck_, SIGNAL(stateChanged(int)), this, SLOT(cubeNegativeChecked(int)));
+
+  cubeGridLayout->addWidget(cubeNegativeCheck_, 3, 0, 1, 2);
+
+  cubeGridLayout->setRowStretch(4, 1);
 
   setCubeStart     (pal->cbStart     ());
   setCubeCycles    (pal->cbCycles    ());
@@ -227,6 +269,50 @@ modelChanged(int model)
     pal->setGreenModel(model);
   else if (me == blueModel_)
     pal->setBlueModel(model);
+
+  emit stateChanged();
+}
+
+void
+CQGradientPaletteControl::
+rNegativeChecked(int state)
+{
+  CGradientPalette *pal = palette_->gradientPalette();
+
+  pal->setRedNegative(state);
+
+  emit stateChanged();
+}
+
+void
+CQGradientPaletteControl::
+gNegativeChecked(int state)
+{
+  CGradientPalette *pal = palette_->gradientPalette();
+
+  pal->setGreenNegative(state);
+
+  emit stateChanged();
+}
+
+void
+CQGradientPaletteControl::
+bNegativeChecked(int state)
+{
+  CGradientPalette *pal = palette_->gradientPalette();
+
+  pal->setBlueNegative(state);
+
+  emit stateChanged();
+}
+
+void
+CQGradientPaletteControl::
+cubeNegativeChecked(int state)
+{
+  CGradientPalette *pal = palette_->gradientPalette();
+
+  pal->setCubeNegative(state);
 
   emit stateChanged();
 }
@@ -407,6 +493,8 @@ createColorTypeCombo(const QString &label, CQGradientPaletteColorType **type)
 {
   QFrame *frame = new QFrame;
 
+  frame->setObjectName("frame");
+
   QHBoxLayout *layout = new QHBoxLayout(frame);
   layout->setMargin(2); layout->setSpacing(2);
 
@@ -461,6 +549,8 @@ CQGradientPaletteColorType::
 CQGradientPaletteColorType(QWidget *parent) :
  QComboBox(parent)
 {
+  setObjectName("colorType");
+
   addItem("Model"     , QVariant(static_cast<int>(CGradientPalette::ColorType::MODEL    )));
   addItem("Defined"   , QVariant(static_cast<int>(CGradientPalette::ColorType::DEFINED  )));
   addItem("Functions" , QVariant(static_cast<int>(CGradientPalette::ColorType::FUNCTIONS)));
@@ -491,6 +581,8 @@ CQGradientPaletteModel::
 CQGradientPaletteModel(QWidget *parent) :
  QComboBox(parent)
 {
+  setObjectName("model");
+
   for (int i = 0; i < CGradientPalette::numModels(); ++i)
     addItem(CGradientPalette::modelName(i).c_str());
 }
@@ -527,6 +619,8 @@ CQGradientPaletteDefinedColors::
 CQGradientPaletteDefinedColors(QWidget *parent) :
  QTableWidget(parent)
 {
+  setObjectName("defineColors");
+
   verticalHeader()->hide();
 
   CQGradientPaletteDefinedColorsDelegate *delegate =

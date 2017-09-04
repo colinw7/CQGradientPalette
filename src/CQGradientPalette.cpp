@@ -35,6 +35,8 @@ void
 CQGradientPalette::
 init()
 {
+  setObjectName("palette");
+
   if (! pal_)
     pal_ = new CGradientPalette(expr_);
 
@@ -77,7 +79,7 @@ paintEvent(QPaintEvent *)
   windowToPixel(1.0, 1.0, px2, py2);
 
   bool   first = true;
-  double r1, g1, b1, m1, x1;
+  double r1 = 0.0, g1 = 0.0, b1 = 0.0, m1 = 0.0, x1 = 0.0;
 
   for (double x = px1; x <= px2; x += 1.0) {
     double wx, wy;
