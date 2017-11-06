@@ -21,6 +21,8 @@ class CQGradientPalette : public QFrame {
   CQGradientPalette(QWidget *parent=0, CExpr *expr=0);
   CQGradientPalette(CExpr *expr=0, QWidget *parent=0);
 
+ ~CQGradientPalette();
+
   CGradientPalette *gradientPalette() { return pal_; }
   void setGradientPalette(CGradientPalette *pal);
 

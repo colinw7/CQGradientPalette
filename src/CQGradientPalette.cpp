@@ -31,6 +31,12 @@ CQGradientPalette(CExpr *expr, QWidget *parent) :
   init();
 }
 
+CQGradientPalette::
+~CQGradientPalette()
+{
+  delete pal_;
+}
+
 void
 CQGradientPalette::
 init()

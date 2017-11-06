@@ -5,7 +5,7 @@
 #include <NaN.h>
 
 namespace Util {
-  inline double clamp(double val, double low, double high) {
+  double clamp(double val, double low, double high) {
     if (val < low ) return low;
     if (val > high) return high;
     return val;
