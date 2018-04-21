@@ -16,13 +16,13 @@ MOC_DIR = .moc
 # Input
 SOURCES += \
 CGradientPalette.cpp \
-CQGradientPaletteControl.cpp \
-CQGradientPalette.cpp \
+CQGradientPaletteIFace.cpp \
+CQGradientPalettePlot.cpp \
 
 HEADERS += \
 ../include/CGradientPalette.h \
-../include/CQGradientPaletteControl.h \
-../include/CQGradientPalette.h \
+../include/CQGradientPaletteIFace.h \
+../include/CQGradientPalettePlot.h \
 CUnixFile.h \
 
 OBJECTS_DIR = ../obj

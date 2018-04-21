@@ -172,9 +172,11 @@ getColor(double x) const
       return CColor(CRGBA(g, g, g));
     }
     else {
-      double r = Util::clamp(interp(redModel  (), x), 0.0, 1.0);
-      double g = Util::clamp(interp(greenModel(), x), 0.0, 1.0);
-      double b = Util::clamp(interp(blueModel (), x), 0.0, 1.0);
+      double x1 = Util::clamp(x, 0.0, 1.0);
+
+      double r = Util::clamp(interp(redModel  (), x1), 0.0, 1.0);
+      double g = Util::clamp(interp(greenModel(), x1), 0.0, 1.0);
+      double b = Util::clamp(interp(blueModel (), x1), 0.0, 1.0);
 
       if (isRedNegative  ()) r = 1.0 - r;
       if (isGreenNegative()) g = 1.0 - g;
@@ -421,12 +423,17 @@ void
 CGradientPalette::
 unset()
 {
-  colorType_ = ColorType::MODEL;
+  colorType_  = ColorType::MODEL;
+  colorModel_ = ColorModel::RGB;
 
   // Model
-  rModel_ = 7;
-  gModel_ = 5;
-  bModel_ = 15;
+  rModel_        = 7;
+  gModel_        = 5;
+  bModel_        = 15;
+  gray_          = false;
+  redNegative_   = false;
+  greenNegative_ = false;
+  blueNegative_  = false;
 
   // Defined
   colors_.clear();
@@ -440,14 +447,11 @@ unset()
   cubeHelix_.reset();
 
   // Misc
-  colorModel_    = ColorModel::RGB;
-  redNegative_   = false;
-  greenNegative_ = false;
-  blueNegative_  = false;
-  gray_          = false;
-  gamma_         = 1.5;
-  maxColors_     = -1;
-  psAllcF_       = false;
+  gamma_     = 1.5;
+  maxColors_ = -1;
+#if 0
+  psAllcF_   = false;
+#endif
 }
 
 void
@@ -479,15 +483,18 @@ show(std::ostream &os) const
   else if (colorType() == ColorType::CUBEHELIX)
     os << "figure is " << (isCubeNegative() ? "NEGATIVE" : "POSITIVE") << std::endl;
 
+#if 0
   if (psAllcF_)
     os << "all color formulae ARE written into output postscript file" << std::endl;
   else
     os << "all color formulae ARE NOT written into output postscript file" << std::endl;
+#endif
 
   if (maxColors() <= 0)
     os << "allocating ALL remaining";
   else
     os << "allocating MAX " << maxColors();
+
   os << " color positions for discrete palette terminals" << std::endl;
 
   os << "Color-Model: ";

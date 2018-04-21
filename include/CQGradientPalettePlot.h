@@ -1,12 +1,12 @@
-#ifndef CQGradientPalette_H
-#define CQGradientPalette_H
+#ifndef CQGradientPalettePlot_H
+#define CQGradientPalettePlot_H
 
 #include <CGradientPalette.h>
 #include <QFrame>
 
 class QPainter;
 
-class CQGradientPalette : public QFrame {
+class CQGradientPalettePlot : public QFrame {
   Q_OBJECT
 
  public:
@@ -18,10 +18,10 @@ class CQGradientPalette : public QFrame {
   };
 
  public:
-  CQGradientPalette(QWidget *parent=0, CExpr *expr=0);
-  CQGradientPalette(CExpr *expr=0, QWidget *parent=0);
+  CQGradientPalettePlot(QWidget *parent=0, CExpr *expr=0);
+  CQGradientPalettePlot(CExpr *expr=0, QWidget *parent=0);
 
- ~CQGradientPalette();
+ ~CQGradientPalettePlot();
 
   CGradientPalette *gradientPalette() { return pal_; }
   void setGradientPalette(CGradientPalette *pal);

@@ -1,4 +1,4 @@
-#include <CQGradientPalette.h>
+#include <CQGradientPalettePlot.h>
 #include <QPainter>
 
 namespace Util {
@@ -17,28 +17,28 @@ namespace Util {
 
 //------
 
-CQGradientPalette::
-CQGradientPalette(QWidget *parent, CExpr *expr) :
+CQGradientPalettePlot::
+CQGradientPalettePlot(QWidget *parent, CExpr *expr) :
  QFrame(parent), expr_(expr), pal_(0)
 {
   init();
 }
 
-CQGradientPalette::
-CQGradientPalette(CExpr *expr, QWidget *parent) :
+CQGradientPalettePlot::
+CQGradientPalettePlot(CExpr *expr, QWidget *parent) :
  QFrame(parent), expr_(expr), pal_(0)
 {
   init();
 }
 
-CQGradientPalette::
-~CQGradientPalette()
+CQGradientPalettePlot::
+~CQGradientPalettePlot()
 {
   delete pal_;
 }
 
 void
-CQGradientPalette::
+CQGradientPalettePlot::
 init()
 {
   setObjectName("palette");
@@ -51,7 +51,7 @@ init()
 }
 
 void
-CQGradientPalette::
+CQGradientPalettePlot::
 setGradientPalette(CGradientPalette *pal)
 {
   delete pal_;
@@ -60,10 +60,12 @@ setGradientPalette(CGradientPalette *pal)
 }
 
 void
-CQGradientPalette::
+CQGradientPalettePlot::
 paintEvent(QPaintEvent *)
 {
   QPainter painter(this);
+
+  painter.setRenderHints(QPainter::Antialiasing | QPainter::TextAntialiasing);
 
   painter.fillRect(rect(), Qt::white);
 
@@ -169,7 +171,7 @@ paintEvent(QPaintEvent *)
 }
 
 void
-CQGradientPalette::
+CQGradientPalettePlot::
 drawAxis(QPainter *painter)
 {
   QPen blackPen(Qt::black); blackPen.setWidth(0);
@@ -192,7 +194,7 @@ drawAxis(QPainter *painter)
 }
 
 void
-CQGradientPalette::
+CQGradientPalettePlot::
 drawLine(QPainter *painter, double x1, double y1, double x2, double y2, const QPen &pen)
 {
   painter->setPen(pen);
@@ -206,7 +208,7 @@ drawLine(QPainter *painter, double x1, double y1, double x2, double y2, const QP
 }
 
 void
-CQGradientPalette::
+CQGradientPalettePlot::
 drawSymbol(QPainter *painter, double x, double y, const QPen &pen)
 {
   painter->setPen(pen);
@@ -220,23 +222,23 @@ drawSymbol(QPainter *painter, double x, double y, const QPen &pen)
 }
 
 void
-CQGradientPalette::
+CQGradientPalettePlot::
 windowToPixel(double wx, double wy, double &px, double &py) const
 {
-  px = Util::map(wx, -margin_.left, 1 + margin_.right, 0, width () - 1);
-  py = Util::map(wy, -margin_.bottom, 1 + margin_.top, height() - 1, 0);
+  px = Util::map(wx, -margin_.left  , 1 + margin_.right, 0, width () - 1);
+  py = Util::map(wy, -margin_.bottom, 1 + margin_.top  , height() - 1, 0);
 }
 
 void
-CQGradientPalette::
+CQGradientPalettePlot::
 pixelToWindow(double px, double py, double &wx, double &wy) const
 {
-  wx = Util::map(px, 0, width () - 1, -margin_.left, 1 + margin_.right);
-  wy = Util::map(py, height() - 1, 0, -margin_.bottom, 1 + margin_.top);
+  wx = Util::map(px, 0, width () - 1, -margin_.left  , 1 + margin_.right);
+  wy = Util::map(py, height() - 1, 0, -margin_.bottom, 1 + margin_.top  );
 }
 
 QSize
-CQGradientPalette::
+CQGradientPalettePlot::
 sizeHint() const
 {
   return QSize(600, 600);

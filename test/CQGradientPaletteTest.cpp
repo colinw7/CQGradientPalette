@@ -1,6 +1,6 @@
 #include <CQGradientPaletteTest.h>
-#include <CQGradientPalette.h>
-#include <CQGradientPaletteControl.h>
+#include <CQGradientPaletteIFace.h>
+#include <CQGradientPalettePlot.h>
 #include <QApplication>
 #include <QVBoxLayout>
 #include <QPainter>
@@ -42,62 +42,87 @@ CQGradientPaletteTest()
   QVBoxLayout *layout1 = new QVBoxLayout;
   layout1->setMargin(2); layout1->setSpacing(2);
 
-  palette_ = new CQGradientPalette(expr);
-  control_ = new CQGradientPaletteControl(palette_);
-  canvas_  = new Canvas(palette_);
+  plot_    = new CQGradientPalettePlot(expr);
+  control_ = new CQGradientPaletteIFace(plot_);
+  canvas_  = new Canvas(plot_);
 
-  connect(control_, SIGNAL(stateChanged()), canvas_, SLOT(update()));
+  connect(control_, SIGNAL(stateChanged()), canvas_, SLOT(setChanged()));
 
   layout1->addWidget(canvas_);
-  layout1->addWidget(palette_);
+  layout1->addWidget(plot_);
 
   layout->addLayout(layout1);
   layout->addWidget(control_);
 }
 
-Canvas::
-Canvas(CQGradientPalette *palette) :
- palette_(palette)
+CQGradientControlTest::
+~CQGradientControlTest()
 {
+}
+
+//------
+
+Canvas::
+Canvas(CQGradientPalettePlot *plot) :
+ plot_(plot)
+{
+}
+
+void
+Canvas::
+resizeEvent(QResizeEvent *)
+{
+  pixmap_  = QPixmap(width(), height());
+  changed_ = true;
 }
 
 void
 Canvas::
 paintEvent(QPaintEvent *)
 {
-  double xmin = -0.66867167919799497, ymin = 0.54141012909632580;
-  double xmax = -0.39598997493734345, ymax = 0.74592140729181433;
+  if (changed_) {
+    QPainter ipainter(&pixmap_);
 
-  static int max_iterations = 256;
+    const double xmin = -0.66867167919799497, ymin = 0.54141012909632580;
+    const double xmax = -0.39598997493734345, ymax = 0.74592140729181433;
+
+    const int max_iterations = 256;
+
+    ipainter.fillRect(rect(), Qt::black);
+
+    CGradientPalette *pal = plot_->gradientPalette();
+
+    mandelbrot_.initCalc(0, 0, width() - 1, height() - 1);
+
+    for (int y = 0; y < height(); ++y) {
+      double wy = Util::map(y, height() - 1, 0, ymin, ymax);
+
+      for (int x = 0; x < width(); ++x) {
+        double wx = Util::map(x, 0, width () - 1, xmin, xmax);
+
+        int i = mandelbrot_.iterate(wx, wy, max_iterations);
+
+        if (i >= max_iterations)
+          continue;
+
+        double z = (1.0*i)/max_iterations;
+
+        CRGBA c = pal->getColor(z).rgba();
+
+        QColor qc(c.getRedI(), c.getGreenI(), c.getBlueI());
+
+        ipainter.setPen(qc);
+
+        ipainter.drawPoint(x, y);
+      }
+    }
+  }
+
+  //---
 
   QPainter painter(this);
 
-  painter.fillRect(rect(), Qt::black);
+  painter.drawPixmap(0, 0, pixmap_);
 
-  CGradientPalette *pal = palette_->gradientPalette();
-
-  mandelbrot_.initCalc(0, 0, width() - 1, height() - 1);
-
-  for (int y = 0; y < height(); ++y) {
-    double wy = Util::map(y, height() - 1, 0, ymin, ymax);
-
-    for (int x = 0; x < width(); ++x) {
-      double wx = Util::map(x, 0, width () - 1, xmin, xmax);
-
-      int i = mandelbrot_.iterate(wx, wy, max_iterations);
-
-      if (i >= max_iterations)
-        continue;
-
-      double z = (1.0*i)/max_iterations;
-
-      CRGBA c = pal->getColor(z).rgba();
-
-      QColor qc(c.getRedI(), c.getGreenI(), c.getBlueI());
-
-      painter.setPen(qc);
-
-      painter.drawPoint(x, y);
-    }
-  }
+  changed_ = false;
 }

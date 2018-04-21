@@ -112,36 +112,32 @@ class CGradientPalette {
   CExpr *expr() const { return expr_; }
   void setExpr(CExpr *expr);
 
+  // color calculation type
   ColorType colorType() const { return colorType_; }
   void setColorType(ColorType t) { colorType_ = t; }
 
+  // color model
   ColorModel colorModel() const { return colorModel_; }
   void setColorModel(ColorModel m) { colorModel_ = m; }
 
+  // NOT USED yet
   double gamma() const { return gamma_; }
   void setGamma(double g) { gamma_ = g; }
 
-  bool isGray() const { return gray_; }
-  void setGray(bool b) { gray_ = b; }
+  //---
 
-  bool isCubeNegative() const { return cubeNegative_; }
-  void setCubeNegative(bool b) { cubeNegative_ = b; }
-
-  bool isRedNegative() const { return redNegative_; }
-  void setRedNegative(bool b) { redNegative_ = b; }
-
-  bool isGreenNegative() const { return greenNegative_; }
-  void setGreenNegative(bool b) { greenNegative_ = b; }
-
-  bool isBlueNegative() const { return blueNegative_; }
-  void setBlueNegative(bool b) { blueNegative_ = b; }
-
+  // NOT USED yet
   int maxColors() const { return maxColors_; }
   void setMaxColors(int n) { maxColors_ = n; }
 
+#if 0
   bool isPSAllCF() const { return psAllcF_; }
   void setPSAllCF(bool b) { psAllcF_ = b; }
+#endif
 
+  //---
+
+  // model
   void setRgbModel(int r, int g, int b);
 
   int redModel() const { return rModel_; }
@@ -153,8 +149,36 @@ class CGradientPalette {
   int blueModel() const { return bModel_; }
   void setBlueModel(int r) { bModel_ = r; }
 
+  bool isGray() const { return gray_; }
+  void setGray(bool b) { gray_ = b; }
+
+  bool isRedNegative() const { return redNegative_; }
+  void setRedNegative(bool b) { redNegative_ = b; }
+
+  bool isGreenNegative() const { return greenNegative_; }
+  void setGreenNegative(bool b) { greenNegative_ = b; }
+
+  bool isBlueNegative() const { return blueNegative_; }
+  void setBlueNegative(bool b) { blueNegative_ = b; }
+
+  void setRedMin(double r) { redMin_ = std::min(std::max(r, 0.0), 1.0); }
+  double redMin() const { return redMin_; }
+  void setRedMax(double r) { redMax_ = std::min(std::max(r, 0.0), 1.0); }
+  double redMax() const { return redMax_; }
+
+  void setGreenMin(double r) { greenMin_ = std::min(std::max(r, 0.0), 1.0); }
+  double greenMin() const { return greenMin_; }
+  void setGreenMax(double r) { greenMax_ = std::min(std::max(r, 0.0), 1.0); }
+  double greenMax() const { return greenMax_; }
+
+  void setBlueMin(double r) { blueMin_ = std::min(std::max(r, 0.0), 1.0); }
+  double blueMin() const { return blueMin_; }
+  void setBlueMax(double r) { blueMax_ = std::min(std::max(r, 0.0), 1.0); }
+  double blueMax() const { return blueMax_; }
+
   //---
 
+  // defined colors
   int numColors() const { return colors_.size(); }
 
   const ColorMap &colors() const { return colors_; }
@@ -177,19 +201,21 @@ class CGradientPalette {
 
   //---
 
-  const std::string &redFunction  () const { return rf_.fn; }
+  // functions
+  const std::string &redFunction() const { return rf_.fn; }
   void setRedFunction(const std::string &fn);
 
   const std::string &greenFunction() const { return gf_.fn; }
   void setGreenFunction(const std::string &fn);
 
-  const std::string &blueFunction () const { return bf_.fn; }
+  const std::string &blueFunction() const { return bf_.fn; }
   void setBlueFunction(const std::string &fn);
 
   void setFunctions(const std::string &rf, const std::string &gf, const std::string &bf);
 
   //---
 
+  // cube helix
   void setCubeHelix(double start, double cycles, double saturation);
 
   double cbStart() const { return cubeHelix_.start(); }
@@ -200,6 +226,9 @@ class CGradientPalette {
 
   double cbSaturation() const { return cubeHelix_.saturation(); }
   void setCbSaturation(double r) { cubeHelix_.setSaturation(r); }
+
+  bool isCubeNegative() const { return cubeNegative_; }
+  void setCubeNegative(bool b) { cubeNegative_ = b; }
 
   //---
 
@@ -221,13 +250,26 @@ class CGradientPalette {
     CExprTokenStack stack;
   };
 
-  // State
-  ColorType  colorType_  { ColorType::MODEL };
+  // Color Calculation Type
+  ColorType  colorType_     { ColorType::MODEL };
+
+  // Color Model
+  ColorModel colorModel_    { ColorModel::RGB };
 
   // Model
-  int        rModel_ { 7 };
-  int        gModel_ { 5 };
-  int        bModel_ { 15 };
+  int        rModel_        { 7 };
+  int        gModel_        { 5 };
+  int        bModel_        { 15 };
+  bool       gray_          { false };
+  bool       redNegative_   { false };
+  bool       greenNegative_ { false };
+  bool       blueNegative_  { false };
+  double     redMin_        { 0.0 };
+  double     redMax_        { 1.0 };
+  double     greenMin_      { 0.0 };
+  double     greenMax_      { 1.0 };
+  double     blueMin_       { 0.0 };
+  double     blueMax_       { 1.0 };
 
   // Functions
   ColorFn    rf_;
@@ -236,21 +278,18 @@ class CGradientPalette {
 
   // CubeHelix
   CCubeHelix cubeHelix_;
+  bool       cubeNegative_  { false };
 
   // Defined
   ColorMap   colors_;
 
   // Misc
   CExpr*     expr_          { nullptr };
-  ColorModel colorModel_    { ColorModel::RGB };
-  bool       redNegative_   { false };
-  bool       greenNegative_ { false };
-  bool       blueNegative_  { false };
-  bool       cubeNegative_  { false };
-  bool       gray_          { false };
   double     gamma_         { 1.5 };
   int        maxColors_     { -1 };
+#if 0
   bool       psAllcF_       { false };
+#endif
 };
 
 typedef std::unique_ptr<CGradientPalette> CGradientPaletteP;
