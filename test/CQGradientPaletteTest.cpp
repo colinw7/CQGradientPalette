@@ -34,15 +34,13 @@ main(int argc, char **argv)
 CQGradientPaletteTest::
 CQGradientPaletteTest()
 {
-  CExpr *expr = new CExpr;
-
   QHBoxLayout *layout = new QHBoxLayout(this);
   layout->setMargin(2); layout->setSpacing(2);
 
   QVBoxLayout *layout1 = new QVBoxLayout;
   layout1->setMargin(2); layout1->setSpacing(2);
 
-  plot_    = new CQGradientPalettePlot(expr);
+  plot_    = new CQGradientPalettePlot();
   control_ = new CQGradientPaletteIFace(plot_);
   canvas_  = new Canvas(plot_);
 
@@ -55,8 +53,8 @@ CQGradientPaletteTest()
   layout->addWidget(control_);
 }
 
-CQGradientControlTest::
-~CQGradientControlTest()
+CQGradientPaletteTest::
+~CQGradientPaletteTest()
 {
 }
 

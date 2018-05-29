@@ -18,8 +18,8 @@ class CQGradientPalettePlot : public QFrame {
   };
 
  public:
-  CQGradientPalettePlot(QWidget *parent=0, CExpr *expr=0);
-  CQGradientPalettePlot(CExpr *expr=0, QWidget *parent=0);
+  CQGradientPalettePlot(QWidget *parent=nullptr, CExpr *expr=nullptr);
+  CQGradientPalettePlot(CExpr *expr, QWidget *parent=nullptr);
 
  ~CQGradientPalettePlot();
 
@@ -43,8 +43,8 @@ class CQGradientPalettePlot : public QFrame {
   void pixelToWindow(double px, double py, double &wx, double &wy) const;
 
  private:
-  CExpr*            expr_ { 0 };
-  CGradientPalette* pal_ { 0 };
+  CExpr*            expr_ { nullptr };
+  CGradientPalette* pal_  { nullptr };
   Margin            margin_;
 };
 

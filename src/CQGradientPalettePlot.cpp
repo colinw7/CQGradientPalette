@@ -19,14 +19,14 @@ namespace Util {
 
 CQGradientPalettePlot::
 CQGradientPalettePlot(QWidget *parent, CExpr *expr) :
- QFrame(parent), expr_(expr), pal_(0)
+ QFrame(parent), expr_(expr)
 {
   init();
 }
 
 CQGradientPalettePlot::
 CQGradientPalettePlot(CExpr *expr, QWidget *parent) :
- QFrame(parent), expr_(expr), pal_(0)
+ QFrame(parent), expr_(expr)
 {
   init();
 }
@@ -42,6 +42,9 @@ CQGradientPalettePlot::
 init()
 {
   setObjectName("palette");
+
+  if (! expr_)
+    expr_ = new CExpr;
 
   if (! pal_)
     pal_ = new CGradientPalette(expr_);
