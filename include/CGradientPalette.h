@@ -4,7 +4,7 @@
 #include <CExpr.h>
 #include <CColor.h>
 #include <CRGBA.h>
-#include <NaN.h>
+#include <COSNaN.h>
 #include <string>
 #include <map>
 #include <memory>
@@ -29,8 +29,8 @@ class CCubeHelix {
     al_ = a_.getLuminance();
     bl_ = b_.getLuminance() - al_;
 
-    if (IsNaN(bs_)) bs_ = 0, as_ = IsNaN(as_) ? b_.getSaturation() : as_;
-    if (IsNaN(bh_)) bh_ = 0, ah_ = IsNaN(ah_) ? b_.getHue()*360 : ah_;
+    if (COSNaN::is_nan(bs_)) bs_ = 0, as_ = COSNaN::is_nan(as_) ? b_.getSaturation() : as_;
+    if (COSNaN::is_nan(bh_)) bh_ = 0, ah_ = COSNaN::is_nan(ah_) ? b_.getHue()*360 : ah_;
   }
 
   double start() const { return start_; }
