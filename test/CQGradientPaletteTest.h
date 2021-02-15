@@ -31,7 +31,7 @@ class Canvas : public QFrame {
 
   void paintEvent(QPaintEvent *) override;
 
-  QSize sizeHint() const { return QSize(400, 400); }
+  QSize sizeHint() const override { return QSize(400, 400); }
 
  public slots:
   void setChanged() { changed_ = true; update(); }
