@@ -26,9 +26,9 @@ class CQGradientPalettePlot : public QFrame {
   CGradientPalette *gradientPalette() { return pal_; }
   void setGradientPalette(CGradientPalette *pal);
 
-  void paintEvent(QPaintEvent *);
+  void paintEvent(QPaintEvent *) override;
 
-  QSize sizeHint() const;
+  QSize sizeHint() const override;
 
  private:
   void init();
