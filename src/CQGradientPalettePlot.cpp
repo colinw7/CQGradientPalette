@@ -143,7 +143,7 @@ paintEvent(QPaintEvent *)
 
     CRGBA rgba = c.rgba();
 
-    QColor qc(rgba.getRedI(), rgba.getGreenI(), rgba.getBlueI());
+    QColor qc(int(rgba.getRedI()), int(rgba.getGreenI()), int(rgba.getBlueI()));
 
     QPen pen(qc); pen.setWidth(0);
 

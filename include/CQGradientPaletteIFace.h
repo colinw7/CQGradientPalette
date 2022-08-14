@@ -178,7 +178,7 @@ class CQGradientPaletteDefinedColors : public QTableWidget {
 
   void updateColors(CGradientPalette *palette);
 
-  int numRealColors() const { return realColors_.size(); }
+  uint numRealColors() const { return uint(realColors_.size()); }
 
   const RealColor &realColor(int i) const;
 

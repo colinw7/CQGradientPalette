@@ -179,7 +179,7 @@ class CGradientPalette {
   //---
 
   // defined colors
-  int numColors() const { return colors_.size(); }
+  uint numColors() const { return uint(colors_.size()); }
 
   const ColorMap &colors() const { return colors_; }
 

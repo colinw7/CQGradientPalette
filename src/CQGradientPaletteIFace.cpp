@@ -30,14 +30,14 @@ CQGradientPaletteIFace(CQGradientPalettePlot *palette) :
 
   //---
 
-  QVBoxLayout *layout = new QVBoxLayout(this);
+  auto *layout = new QVBoxLayout(this);
   layout->setMargin(2); layout->setSpacing(2);
 
-  CGradientPalette *pal = palette_->gradientPalette();
+  auto *pal = palette_->gradientPalette();
 
   //---
 
-  QFrame *colorTypeFrame = createColorTypeCombo("Type", &colorType_);
+  auto *colorTypeFrame = createColorTypeCombo("Type", &colorType_);
 
   colorType_->setType(pal->colorType());
 
@@ -47,7 +47,7 @@ CQGradientPaletteIFace(CQGradientPalettePlot *palette) :
 
   //---
 
-  QFrame *colorModelFrame = createColorModelCombo("Color", &colorModel_);
+  auto *colorModelFrame = createColorModelCombo("Color", &colorModel_);
 
   colorModel_->setModel(pal->colorModel());
 
@@ -63,11 +63,11 @@ CQGradientPaletteIFace(CQGradientPalettePlot *palette) :
 
   //---
 
-  QFrame *modelFrame = new QFrame;
+  auto *modelFrame = new QFrame;
 
   modelFrame->setObjectName("modelFrame");
 
-  QGridLayout *modelGridLayout = new QGridLayout(modelFrame);
+  auto *modelGridLayout = new QGridLayout(modelFrame);
   modelGridLayout->setMargin(2); modelGridLayout->setSpacing(2);
 
   createModelCombo(modelGridLayout, 0, "Red"  , &redModel_  );
@@ -84,13 +84,13 @@ CQGradientPaletteIFace(CQGradientPalettePlot *palette) :
 
   //---
 
-  QGroupBox *negateGroupBox = new QGroupBox("Negate");
+  auto *negateGroupBox = new QGroupBox("Negate");
 
   negateGroupBox->setContentsMargins(0, fm.height() + 2, 0, 0);
 
   negateGroupBox->setObjectName("negate");
 
-  QHBoxLayout *negateGroupLayout = new QHBoxLayout(negateGroupBox);
+  auto *negateGroupLayout = new QHBoxLayout(negateGroupBox);
   negateGroupLayout->setMargin(0); negateGroupLayout->setSpacing(2);
 
   modelGridLayout->addWidget(negateGroupBox, 3, 0, 1, 2);
@@ -114,18 +114,18 @@ CQGradientPaletteIFace(CQGradientPalettePlot *palette) :
 
   //---
 
-  QGroupBox *rangeGroupBox = new QGroupBox("Range");
+  auto *rangeGroupBox = new QGroupBox("Range");
 
   rangeGroupBox->setContentsMargins(0, fm.height() + 2, 0, 0);
 
   rangeGroupBox->setObjectName("range");
 
-  QHBoxLayout *rangeGroupLayout = new QHBoxLayout(rangeGroupBox);
+  auto *rangeGroupLayout = new QHBoxLayout(rangeGroupBox);
   rangeGroupLayout->setMargin(0); rangeGroupLayout->setSpacing(2);
 
   modelGridLayout->addWidget(rangeGroupBox, 4, 0, 1, 2);
 
-  QGridLayout *rangeGridLayout = new QGridLayout;
+  auto *rangeGridLayout = new QGridLayout;
 
   createRealEdit(rangeGridLayout, 0, "Red Min"  , &redMin_  );
   createRealEdit(rangeGridLayout, 1, "Red Max"  , &redMax_  );
@@ -152,11 +152,11 @@ CQGradientPaletteIFace(CQGradientPalettePlot *palette) :
 
   //---
 
-  QFrame *definedFrame = new QFrame;
+  auto *definedFrame = new QFrame;
 
   definedFrame->setObjectName("definedFrame");
 
-  QVBoxLayout *definedFrameLayout = new QVBoxLayout(definedFrame);
+  auto *definedFrameLayout = new QVBoxLayout(definedFrame);
   definedFrameLayout->setMargin(2); definedFrameLayout->setSpacing(2);
 
   definedColors_ = new CQGradientPaletteDefinedColors;
@@ -167,11 +167,11 @@ CQGradientPaletteIFace(CQGradientPalettePlot *palette) :
 
   connect(definedColors_, SIGNAL(colorsChanged()), this, SLOT(colorsChanged()));
 
-  QFrame *definedButtonsFrame = new QFrame;
+  auto *definedButtonsFrame = new QFrame;
 
   definedButtonsFrame->setObjectName("definedButtonsFrame");
 
-  QHBoxLayout *definedButtonsLayout = new QHBoxLayout(definedButtonsFrame);
+  auto *definedButtonsLayout = new QHBoxLayout(definedButtonsFrame);
   definedButtonsLayout->setMargin(2); definedButtonsLayout->setSpacing(2);
 
   addColorButton_   = new QPushButton("Add");
@@ -193,11 +193,11 @@ CQGradientPaletteIFace(CQGradientPalettePlot *palette) :
 
   //---
 
-  QFrame *functionsFrame = new QFrame;
+  auto *functionsFrame = new QFrame;
 
   functionsFrame->setObjectName("functionsFrame");
 
-  QGridLayout *functionsGridLayout = new QGridLayout(functionsFrame);
+  auto *functionsGridLayout = new QGridLayout(functionsFrame);
   functionsGridLayout->setMargin(2); functionsGridLayout->setSpacing(2);
 
   createFunctionEdit(functionsGridLayout, 0, "Red"  , &redFunction_  );
@@ -218,11 +218,11 @@ CQGradientPaletteIFace(CQGradientPalettePlot *palette) :
 
   //---
 
-  QFrame *cubeFrame = new QFrame;
+  auto *cubeFrame = new QFrame;
 
   cubeFrame->setObjectName("cubeFrame");
 
-  QGridLayout *cubeGridLayout = new QGridLayout(cubeFrame);
+  auto *cubeGridLayout = new QGridLayout(cubeFrame);
   cubeGridLayout->setMargin(2); cubeGridLayout->setSpacing(2);
 
   createRealEdit(cubeGridLayout, 0, "Start"     , &cubeStart_     );
@@ -263,7 +263,7 @@ void
 CQGradientPaletteIFace::
 colorTypeChanged(int)
 {
-  CGradientPalette *pal = palette_->gradientPalette();
+  auto *pal = palette_->gradientPalette();
 
   pal->setColorType(colorType_->type());
 
@@ -283,7 +283,7 @@ void
 CQGradientPaletteIFace::
 colorModelChanged(int)
 {
-  CGradientPalette *pal = palette_->gradientPalette();
+  auto *pal = palette_->gradientPalette();
 
   pal->setColorModel(colorModel_->model());
 
@@ -336,10 +336,10 @@ void
 CQGradientPaletteIFace::
 modelChanged(int model)
 {
-  CQGradientPaletteModel *me = qobject_cast<CQGradientPaletteModel *>(sender());
+  auto *me = qobject_cast<CQGradientPaletteModel *>(sender());
   assert(me);
 
-  CGradientPalette *pal = palette_->gradientPalette();
+  auto *pal = palette_->gradientPalette();
 
   if      (me == redModel_)
     pal->setRedModel(model);
@@ -355,7 +355,7 @@ void
 CQGradientPaletteIFace::
 modelRNegativeChecked(int state)
 {
-  CGradientPalette *pal = palette_->gradientPalette();
+  auto *pal = palette_->gradientPalette();
 
   pal->setRedNegative(state);
 
@@ -366,7 +366,7 @@ void
 CQGradientPaletteIFace::
 modelGNegativeChecked(int state)
 {
-  CGradientPalette *pal = palette_->gradientPalette();
+  auto *pal = palette_->gradientPalette();
 
   pal->setGreenNegative(state);
 
@@ -377,7 +377,7 @@ void
 CQGradientPaletteIFace::
 modelBNegativeChecked(int state)
 {
-  CGradientPalette *pal = palette_->gradientPalette();
+  auto *pal = palette_->gradientPalette();
 
   pal->setBlueNegative(state);
 
@@ -388,10 +388,10 @@ void
 CQGradientPaletteIFace::
 modelRangeValueChanged(double r)
 {
-  CQRealSpin *rs = qobject_cast<CQRealSpin *>(sender());
+  auto *rs = qobject_cast<CQRealSpin *>(sender());
   assert(rs);
 
-  CGradientPalette *pal = palette_->gradientPalette();
+  auto *pal = palette_->gradientPalette();
 
   if      (rs == redMin_)
     pal->setRedMin(r);
@@ -405,7 +405,7 @@ void
 CQGradientPaletteIFace::
 cubeNegativeChecked(int state)
 {
-  CGradientPalette *pal = palette_->gradientPalette();
+  auto *pal = palette_->gradientPalette();
 
   pal->setCubeNegative(state);
 
@@ -416,12 +416,12 @@ void
 CQGradientPaletteIFace::
 colorsChanged()
 {
-  CGradientPalette *pal = palette_->gradientPalette();
+  auto *pal = palette_->gradientPalette();
 
   pal->resetDefinedColors();
 
-  for (int i = 0; i < definedColors_->numRealColors(); ++i) {
-    const CQGradientPaletteDefinedColors::RealColor &realColor = definedColors_->realColor(i);
+  for (uint i = 0; i < definedColors_->numRealColors(); ++i) {
+    const auto &realColor = definedColors_->realColor(int(i));
 
     pal->addDefinedColor(realColor.r, realColor.c);
   }
@@ -433,19 +433,19 @@ void
 CQGradientPaletteIFace::
 addColorSlot()
 {
-  CGradientPalette *pal = palette_->gradientPalette();
+  auto *pal = palette_->gradientPalette();
 
   int row = 0;
 
-  QList<QTableWidgetItem *> selectedItems = definedColors_->selectedItems();
+  auto selectedItems = definedColors_->selectedItems();
 
   if (selectedItems.length())
     row = selectedItems[0]->row();
 
-  const CGradientPalette::ColorMap colors = pal->colors();
+  const auto &colors = pal->colors();
 
   double x = 0.5;
-  CColor c = CRGBA(0.5, 0.5, 0.5);
+  auto   c = CColor(CRGBA(0.5, 0.5, 0.5));
 
   int row1 = -1;
 
@@ -459,12 +459,12 @@ addColorSlot()
 
     std::advance(p, row1);
 
-    double        x1 = (*p).first;
-    const CColor &c1 = (*p).second;
+    double      x1 = (*p).first;
+    const auto &c1 = (*p).second;
 
     ++p;
-    double        x2 = (*p).first;
-    const CColor &c2 = (*p).second;
+    double      x2 = (*p).first;
+    const auto &c2 = (*p).second;
 
     x = (x1 + x2)/2;
     c = CColor::interp(c1, c2, 0.5);
@@ -481,11 +481,11 @@ void
 CQGradientPaletteIFace::
 loadColorsSlot()
 {
-  CGradientPalette *pal = palette_->gradientPalette();
+  auto *pal = palette_->gradientPalette();
 
-  QString dir = QDir::current().dirName();
+  auto dir = QDir::current().dirName();
 
-  QString fileName = QFileDialog::getOpenFileName(this, "Open File", dir, "Files (*.*)");
+  auto fileName = QFileDialog::getOpenFileName(this, "Open File", dir, "Files (*.*)");
 
   if (! fileName.length())
     return;
@@ -541,10 +541,10 @@ void
 CQGradientPaletteIFace::
 functionChanged()
 {
-  QLineEdit *le = qobject_cast<QLineEdit *>(sender());
+  auto *le = qobject_cast<QLineEdit *>(sender());
   assert(le);
 
-  CGradientPalette *pal = palette_->gradientPalette();
+  auto *pal = palette_->gradientPalette();
 
   if      (le == redFunction_)
     pal->setRedFunction  (le->text().toStdString());
@@ -602,10 +602,10 @@ void
 CQGradientPaletteIFace::
 cubeValueChanged(double r)
 {
-  CQRealSpin *rs = qobject_cast<CQRealSpin *>(sender());
+  auto *rs = qobject_cast<CQRealSpin *>(sender());
   assert(rs);
 
-  CGradientPalette *pal = palette_->gradientPalette();
+  auto *pal = palette_->gradientPalette();
 
   if      (rs == cubeStart_)
     pal->setCbStart(r);
@@ -621,11 +621,11 @@ QFrame *
 CQGradientPaletteIFace::
 createColorTypeCombo(const QString &label, CQGradientPaletteColorType **type)
 {
-  QFrame *frame = new QFrame;
+  auto *frame = new QFrame;
 
   frame->setObjectName("frame");
 
-  QHBoxLayout *layout = new QHBoxLayout(frame);
+  auto *layout = new QHBoxLayout(frame);
   layout->setMargin(2); layout->setSpacing(2);
 
   *type = new CQGradientPaletteColorType;
@@ -641,11 +641,11 @@ QFrame *
 CQGradientPaletteIFace::
 createColorModelCombo(const QString &label, CQGradientPaletteColorModel **model)
 {
-  QFrame *frame = new QFrame;
+  auto *frame = new QFrame;
 
   frame->setObjectName("frame");
 
-  QHBoxLayout *layout = new QHBoxLayout(frame);
+  auto *layout = new QHBoxLayout(frame);
   layout->setMargin(2); layout->setSpacing(2);
 
   *model = new CQGradientPaletteColorModel;
@@ -812,7 +812,7 @@ CQGradientPaletteDefinedColors(QWidget *parent) :
   setSelectionMode(QAbstractItemView::SingleSelection);
   setSelectionBehavior(QAbstractItemView::SelectRows);
 
-  QHeaderView *header = horizontalHeader();
+  auto *header = horizontalHeader();
 
   header->setStretchLastSection(true) ;
 }
@@ -825,21 +825,21 @@ updateColors(CGradientPalette *palette)
 
   setHorizontalHeaderLabels(QStringList() << "X" << "Color");
 
-  setRowCount(palette->numColors());
+  setRowCount(int(palette->numColors()));
 
   realColors_.clear();
 
   for (const auto &c : palette->colors())
     realColors_.emplace_back(c.first, c.second.rgba());
 
-  for (int r = 0; r < numRealColors(); ++r) {
-    const RealColor &realColor = this->realColor(r);
+  for (uint r = 0; r < numRealColors(); ++r) {
+    const RealColor &realColor = this->realColor(int(r));
 
-    QTableWidgetItem *item1 = new QTableWidgetItem(QString("%1").arg(realColor.r));
-    QTableWidgetItem *item2 = new QTableWidgetItem(realColor.c.getRGB().toString().c_str());
+    auto *item1 = new QTableWidgetItem(QString("%1").arg(realColor.r));
+    auto *item2 = new QTableWidgetItem(realColor.c.getRGB().toString().c_str());
 
-    setItem(r, 0, item1);
-    setItem(r, 1, item2);
+    setItem(int(r), 0, item1);
+    setItem(int(r), 1, item2);
   }
 }
 
@@ -847,17 +847,21 @@ const CQGradientPaletteDefinedColors::RealColor &
 CQGradientPaletteDefinedColors::
 realColor(int r) const
 {
-  return realColors_[r];
+  assert(r > 0 && uint(r) < realColors_.size());
+
+  return realColors_[uint(r)];
 }
 
 void
 CQGradientPaletteDefinedColors::
 setRealColor(int r, const RealColor &realColor)
 {
-  realColors_[r] = realColor;
+  assert(r > 0 && uint(r) < realColors_.size());
 
-  //QTableWidgetItem *item1 = new QTableWidgetItem(QString("%1").arg(realColor.r));
-  //QTableWidgetItem *item2 = new QTableWidgetItem(realColor.c.getRGB().toString().c_str());
+  realColors_[uint(r)] = realColor;
+
+  //auto *item1 = new QTableWidgetItem(QString("%1").arg(realColor.r));
+  //auto *item2 = new QTableWidgetItem(realColor.c.getRGB().toString().c_str());
 
   //setItem(r, 0, item1);
   //setItem(r, 1, item2);
@@ -877,24 +881,26 @@ QWidget *
 CQGradientPaletteDefinedColorsDelegate::
 createEditor(QWidget *parent, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-  QTableWidgetItem *item = colors_->item(index.row(), index.column());
+  auto *item = colors_->item(index.row(), index.column());
   assert(item);
 
-  const CQGradientPaletteDefinedColors::RealColor &realColor = colors_->realColor(index.row());
+  const auto &realColor = colors_->realColor(index.row());
 
   if       (index.column() == 0) {
-    CQRealSpin *edit = new CQRealSpin(parent);
+    auto *edit = new CQRealSpin(parent);
 
     edit->setValue(realColor.r);
 
     return edit;
   }
   else if (index.column() == 1) {
-    CQColorChooser *edit = new CQColorChooser(parent);
+    auto *edit = new CQColorChooser(parent);
 
     edit->setStyles(CQColorChooser::Text | CQColorChooser::ColorButton);
 
-    edit->setColor(QColor(realColor.c.getRedI(), realColor.c.getGreenI(), realColor.c.getBlueI()));
+    edit->setColor(QColor(int(realColor.c.getRedI()),
+                          int(realColor.c.getGreenI()),
+                          int(realColor.c.getBlueI())));
 
     return edit;
   }
@@ -907,22 +913,22 @@ void
 CQGradientPaletteDefinedColorsDelegate::
 setEditorData(QWidget *w, const QModelIndex &index) const
 {
-  QTableWidgetItem *item = colors_->item(index.row(), index.column());
+  auto *item = colors_->item(index.row(), index.column());
   assert(item);
 
-  const CQGradientPaletteDefinedColors::RealColor &realColor = colors_->realColor(index.row());
+  const auto &realColor = colors_->realColor(index.row());
 
   if       (index.column() == 0) {
-    CQRealSpin *edit = qobject_cast<CQRealSpin *>(w);
+    auto *edit = qobject_cast<CQRealSpin *>(w);
 
     edit->setValue(realColor.r);
   }
   else if (index.column() == 1) {
-    CQColorChooser *edit = qobject_cast<CQColorChooser *>(w);
+    auto *edit = qobject_cast<CQColorChooser *>(w);
 
-    const CRGBA &c = realColor.c;
+    const auto &c = realColor.c;
 
-    QColor qc(c.getRedI(), c.getGreenI(), c.getBlueI());
+    QColor qc(int(c.getRedI()), int(c.getGreenI()), int(c.getBlueI()));
 
     edit->setColor(qc);
   }
@@ -935,13 +941,13 @@ void
 CQGradientPaletteDefinedColorsDelegate::
 setModelData(QWidget *w, QAbstractItemModel *model, const QModelIndex &index) const
 {
-  QTableWidgetItem *item = colors_->item(index.row(), index.column());
+  auto *item = colors_->item(index.row(), index.column());
   assert(item);
 
-  CQGradientPaletteDefinedColors::RealColor realColor = colors_->realColor(index.row());
+  auto realColor = colors_->realColor(index.row());
 
   if       (index.column() == 0) {
-    CQRealSpin *edit = qobject_cast<CQRealSpin *>(w);
+    auto *edit = qobject_cast<CQRealSpin *>(w);
 
     double r = edit->value();
 
@@ -950,9 +956,9 @@ setModelData(QWidget *w, QAbstractItemModel *model, const QModelIndex &index) co
     realColor.r = r;
   }
   else if (index.column() == 1) {
-    CQColorChooser *edit = qobject_cast<CQColorChooser *>(w);
+    auto *edit = qobject_cast<CQColorChooser *>(w);
 
-    QColor qc = edit->color();
+    auto qc = edit->color();
 
     realColor.c = CRGBA(qc.redF(), qc.greenF(), qc.blueF(), qc.alphaF());
 
@@ -968,7 +974,7 @@ QSize
 CQGradientPaletteDefinedColorsDelegate::
 sizeHint(const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-  QTableWidgetItem *item = colors_->item(index.row(), index.column());
+  auto *item = colors_->item(index.row(), index.column());
   assert(item);
 
   return QItemDelegate::sizeHint(option, index);
@@ -986,7 +992,7 @@ void
 CQGradientPaletteDefinedColorsDelegate::
 paint(QPainter *painter, const QStyleOptionViewItem &option, const QModelIndex &index) const
 {
-  QTableWidgetItem *item = colors_->item(index.row(), index.column());
+  auto *item = colors_->item(index.row(), index.column());
   assert(item);
 
   QItemDelegate::paint(painter, option, index);
