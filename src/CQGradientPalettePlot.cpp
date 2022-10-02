@@ -49,8 +49,8 @@ init()
   if (! pal_)
     pal_ = new CGradientPalette(expr_);
 
-  pal_->addDefinedColor(0, CRGBA(0,0,0));
-  pal_->addDefinedColor(1, CRGBA(1,1,1));
+  pal_->addDefinedColor(0, CRGBA(0, 0, 0));
+  pal_->addDefinedColor(1, CRGBA(1, 1, 1));
 }
 
 void

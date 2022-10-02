@@ -9,7 +9,7 @@ QT += widgets
 CONFIG += staticlib
 CONFIG += debug
 
-QMAKE_CXXFLAGS += -std=c++14
+QMAKE_CXXFLAGS += -std=c++17
 
 MOC_DIR = .moc
 
