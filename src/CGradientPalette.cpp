@@ -17,7 +17,7 @@ namespace Util {
 
     CExprTokenStack cstack;
 
-    if (itoken.isValid())
+    if (itoken)
       cstack = expr->compileIToken(itoken);
     else
       expr->errorMsg("Eval failed: '" + str + "'");
@@ -199,16 +199,13 @@ getColor(double x) const
 
     CExprValuePtr value;
 
-    if (! expr_->executeCTokenStack(rf_.stack, value) ||
-        ! value.isValid() || ! value->getRealValue(r))
+    if (! expr_->executeCTokenStack(rf_.stack, value) || ! value || ! value->getRealValue(r))
       r = 0.0;
 
-    if (! expr_->executeCTokenStack(gf_.stack, value) ||
-        ! value.isValid() || ! value->getRealValue(g))
+    if (! expr_->executeCTokenStack(gf_.stack, value) || ! value || ! value->getRealValue(g))
       g = 0.0;
 
-    if (! expr_->executeCTokenStack(bf_.stack, value) ||
-        ! value.isValid() || ! value->getRealValue(b))
+    if (! expr_->executeCTokenStack(bf_.stack, value) || ! value || ! value->getRealValue(b))
       b = 0.0;
 
     r = Util::clamp(r, 0, 1);
