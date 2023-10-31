@@ -127,7 +127,7 @@ class CQGradientPaletteColorType : public QComboBox {
   Q_OBJECT
 
  public:
-  CQGradientPaletteColorType(QWidget *parent=0);
+  CQGradientPaletteColorType(QWidget *parent=nullptr);
 
   CGradientPalette::ColorType type() const;
 
@@ -140,7 +140,7 @@ class CQGradientPaletteColorModel : public QComboBox {
   Q_OBJECT
 
  public:
-  CQGradientPaletteColorModel(QWidget *parent=0);
+  CQGradientPaletteColorModel(QWidget *parent=nullptr);
 
   CGradientPalette::ColorModel model() const;
 
@@ -153,7 +153,7 @@ class CQGradientPaletteModel : public QComboBox {
   Q_OBJECT
 
  public:
-  CQGradientPaletteModel(QWidget *parent=0);
+  CQGradientPaletteModel(QWidget *parent=nullptr);
 };
 
 //---
@@ -174,7 +174,7 @@ class CQGradientPaletteDefinedColors : public QTableWidget {
   typedef std::vector<RealColor> RealColors;
 
  public:
-  CQGradientPaletteDefinedColors(QWidget *parent=0);
+  CQGradientPaletteDefinedColors(QWidget *parent=nullptr);
 
   void updateColors(CGradientPalette *palette);
 

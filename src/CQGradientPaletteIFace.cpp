@@ -20,7 +20,7 @@
 
 CQGradientPaletteIFace::
 CQGradientPaletteIFace(CQGradientPalettePlot *palette) :
- QFrame(0), palette_(palette)
+ QFrame(nullptr), palette_(palette)
 {
   setObjectName("paletteControl");
 
